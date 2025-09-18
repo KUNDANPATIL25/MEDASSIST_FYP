@@ -1,0 +1,70 @@
+<!-- templates/user_register.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Registration - MedAssist</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" /> 
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/user_styles.css') }}" />
+  <script defer src="{{ url_for('static', filename='js/form-validation.js') }}"></script>
+</head>
+<body>
+  <section class="user-register-section">
+    <div class="form-card">
+      <h2>🧑‍💼 Register as User</h2>
+      <form id="userForm" action="/register-user" method="POST">
+        <div class="form-grid">
+          <div class="form-column">
+            <h3>👤 Personal Information</h3>
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="full_name" required />
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required />
+
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" required />
+
+            <label for="landmark">Landmark</label>
+            <input type="text" id="landmark" name="landmark" required />
+
+            <label for="location">Location</label>
+            <input type="text" id="location" name="location" required />
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required />
+
+            <label for="age">Age</label>
+            <input type="number" id="age" name="age" required />
+
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender" required>
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-column">
+            <h3>🩺 Health Information</h3>
+            <label for="condition">Medical Conditions</label>
+            <textarea id="condition" name="condition"></textarea>
+
+            <label for="medications">Current Medications</label>
+            <textarea id="medications" name="medications"></textarea>
+
+            <label for="allergies">Allergies</label>
+            <textarea id="allergies" name="allergies"></textarea>
+
+            
+          </div>
+        </div>
+        <button type="submit" class="submit-btn">Register</button>
+        <p class="login-link">Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+      </form>
+    </div>
+  </section>
+</body>
+</html>

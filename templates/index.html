@@ -1,0 +1,37 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to MedAssist</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+  <script defer src="{{ url_for('static', filename='js/splash.js') }}"></script>
+</head>
+<body>
+
+  <!-- Splash Screen with Flash Card -->
+  <section id="splash" class="splash-screen">
+    <div class="flash-card">
+      <h1 class="logo-text"> MedAssist</h1>
+      <p class="sub-text">Empowering Healthcare with AI</p>
+    </div>
+  
+  </section>
+
+  <!-- Main Navigation after Splash -->
+  <main id="main-navigation" class="hidden">
+    <div class="container">
+      <h1>Welcome to MedAssist</h1>
+      <p>Your AI-powered medical companion</p>
+      <div class="buttons">
+        <a href="{{ url_for('register_doctor') }}" class="btn btn-doctor">Register as Doctor</a>
+        <a href="{{ url_for('register_user') }}" class="btn btn-user">Register as User</a>
+        <a href="{{ url_for('login') }}" class="btn btn-login">Login</a>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>

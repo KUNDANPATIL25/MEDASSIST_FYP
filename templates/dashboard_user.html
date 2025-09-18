@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>User Dashboard with Chat - MedAssist</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+  <!-- External CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/user_dash.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style2.css') }}" />
+</head>
+<body>
+  <div class="user-dashboard">
+    <!-- Top Navigation -->
+    <div class="dashboard-header">
+      <h2>MedAssist </h2>
+      <div class="user-info">
+        <div class="profile-icon-container">
+          <div class="profile-icon" id="profile-icon">
+            <i class="fas fa-user-circle"></i>
+          </div>
+          <div class="profile-card" id="profile-card">
+            <div class="profile-card-header">
+              <h3>User Profile</h3>
+              <span class="close-profile" id="close-profile">&times;</span>
+            </div>
+            <div class="profile-card-content">
+              <div class="profile-section">
+                <h4>🧾 Personal Information</h4>
+                <div class="profile-detail">
+                  <span class="detail-label">Name:</span>
+                  <span class="detail-value">{{ user.full_name }}</span>
+                </div>
+                <div class="profile-detail">
+                  <span class="detail-label">Email:</span>
+                  <span class="detail-value">{{ user.email }}</span>
+                </div>
+                <div class="profile-detail">
+                  <span class="detail-label">Phone:</span>
+                  <span class="detail-value">{{ user.phone }}</span>
+                </div>
+                <div class="profile-detail">
+                  <span class="detail-label">Age:</span>
+                  <span class="detail-value">{{ user.age }}</span>
+                </div>
+                <div class="profile-detail">
+                  <span class="detail-label">Gender:</span>
+                  <span class="detail-value">{{ user.gender }}</span>
+                </div>
+              </div>
+              
+              <div class="profile-section">
+                <h4>📍 Location Details</h4>
+                <div class="profile-detail">
+                  <span class="detail-label">Location:</span>
+                  <span class="detail-value">{{ user.location }}</span>
+                </div>
+                <div class="profile-detail">
+                  <span class="detail-label">Landmark:</span>
+                  <span class="detail-value">{{ user.landmark }}</span>
+                </div>
+              </div>
+              
+              <div class="profile-section">
+                <h4>🏥 Health Information</h4>
+                <div class="profile-detail">
+                  <span class="detail-label">Conditions:</span>
+                  <span class="detail-value">{{ user.condition or 'None' }}</span>
+                </div>
+                <div class="profile-detail">
+                  <span class="detail-label">Medications:</span>
+                  <span class="detail-value">{{ user.medications or 'None' }}</span>
+                </div>
+                <div class="profile-detail">
+                  <span class="detail-label">Allergies:</span>
+                  <span class="detail-value">{{ user.allergies or 'None' }}</span>
+                </div>
+              </div>
+              
+              <div class="profile-section">
+                <div class="profile-detail">
+                  <span class="detail-label">Member Since:</span>
+                  <span class="detail-value">{{ user.created_at.strftime('%d-%m-%Y') }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span id="user-name" class="user-name">👤 {{ user.full_name }}</span>
+        
+          <script>
+            // Get the element
+            const userNameElement = document.getElementById("user-name");
+
+            // Extract the full name text (remove the 👤 icon first)
+            let fullName = userNameElement.textContent.replace("👤", "").trim();
+
+            // Split and take the first name
+            let firstName = fullName.split(" ")[0];
+
+            // Set back with the icon + first name
+            userNameElement.textContent = "👤 " + firstName;
+          </script>
+
+        <a class="logout-btn" href="{{ url_for('logout') }}">Logout</a>
+      </div>
+    </div>
+
+    <!-- Rest of your existing code remains exactly the same -->
+    <!-- Main Content -->
+    <div class="dashboard-main">
+      <!-- ... all your existing content ... -->
+       <!-- Chat Section -->
+      <div class="chat-section">
+        <header class="chat-header">
+          <div class="logo-area">
+            <i class="fas fa-heartbeat medical-icon"></i>
+            <h1>MedAssist AI</h1>
+          </div>
+          <p class="description"></p>
+        </header>
+
+        <!-- Doctor avatar and introduction -->
+        <div class="doctor-intro">
+          <div class="doctor-avatar">
+            <img src="{{ url_for('static', filename='images/doctor-avatar.png') }}" alt="AI Doctor" onerror="this.src='https://via.placeholder.com/120?text=AI+Doctor'">
+          </div>
+          <div class="doctor-info">
+            <h2>Dr. AI Assistant</h2>
+            <p>Interactive medical AI trained to provide health information</p>
+            <span class="status-indicator online">Available Now</span>
+          </div>
+        </div>
+
+        <!-- Conversation suggestions -->
+        <div class="conversation-suggestions">
+          <p>Common questions:</p>
+          <div class="suggestion-chips">
+            <button class="suggestion-chip" data-query="What are symptoms of fever?">Fever symptoms</button>
+            <button class="suggestion-chip" data-query="How to treat a headache?">Headache remedies</button>
+            <button class="suggestion-chip" data-query="I have a sore throat">Sore throat concerns</button>
+            <button class="suggestion-chip" data-query="I'm experiencing back pain">Back pain</button>
+          </div>
+        </div>
+
+        <!-- Input with microphone option -->
+        <div class="input-container">
+          <input type="text" id="query-input" class="prompt-box" placeholder="Type your health concern...">
+          <button id="mic-button" class="mic-button" title="Speak your question">
+            <i class="fas fa-microphone"></i>
+          </button>
+          <button id="send-button" class="send-button" title="Send message">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+
+
+         
+
+        <!-- Chat container -->
+        <div class="chat-container" id="chat-box">
+          <!-- Initial message from the doctor -->
+          <div class="chat-bubble bot-message with-avatar">
+            <div class="message-content">
+              <p class="message-header">Dr. AI Assistant</p>
+              <p>Hello! I'm your interactive medical AI assistant. How can I help you today? Please describe your symptoms or health concerns, and I'll ask follow-up questions if needed to provide better information.</p>
+              <p class="message-footer">Remember, I'm a chatbot, not a doctor, and cannot provide professional medical advice.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add interactive components container for follow-up questions and UI elements -->
+        <div id="interactive-components"></div>
+
+        <!-- Structured response container (for gemini_generic results) -->
+        <div class="structured-container" id="structured-response">
+          <!-- Structured content will be added here dynamically -->
+        </div>
+
+        <!-- Add structured response area for displaying assessments -->
+        <div id="structured-response-area"></div>
+
+        <!-- Image container -->
+        <div class="image-container" id="image-box">
+          <!-- Images will be added here by the script -->
+        </div>
+
+        <div class="consultation-footer">
+          <div class="consultation-notice">
+            <i class="fas fa-info-circle"></i>
+            <span>This is an AI assistant providing general health information. For medical emergencies, call emergency services.</span>
+          </div>
+          <div class="buttons">
+            <a id="google-link" href="https://www.google.com" target="_blank">
+              <i class="fab fa-google"></i> Research More
+            </a>
+            <a id="youtube-link" href="https://www.youtube.com" target="_blank">
+              <i class="fab fa-youtube"></i> Health Videos
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- About Section -->
+  <div class="about">
+    <h2>About MedAssist AI</h2>
+    <p>MedAssist AI provides accessible medical information powered by advanced AI. While our assistant can help with general health inquiries, it is not a substitute for professional medical advice. Always consult a qualified healthcare provider for medical concerns.</p>
+    <div class="about-features">
+      <div class="feature">
+        <i class="fas fa-chart-line"></i>
+        <span>AI-Powered Analysis</span>
+      </div>
+      <div class="feature">
+        <i class="fas fa-lock"></i>
+        <span>Secure Conversations</span>
+      </div>
+      <div class="feature">
+        <i class="fas fa-book-medical"></i>
+        <span>Medical Knowledge</span>
+      </div>
+      <div class="feature">
+        <i class="fas fa-comments"></i>
+        <span>Interactive Conversations</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    Created with ❤️ in India
+  </div>
+
+  <!-- Modal for Image Zoom -->
+  <div id="modal" class="modal">
+    <img id="zoomed-image" src="" alt="Zoomed Image">
+  </div>
+
+  <!-- JavaScript -->
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+   
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const profileIcon = document.getElementById('profile-icon');
+      const profileCard = document.getElementById('profile-card');
+      const closeProfile = document.getElementById('close-profile');
+      
+      // Toggle profile card on icon click
+      if (profileIcon && profileCard) {
+        profileIcon.addEventListener('click', function(e) {
+          e.stopPropagation();
+          profileCard.style.display = profileCard.style.display === 'block' ? 'none' : 'block';
+        });
+      }
+      
+      // Close profile card when clicking close button
+      if (closeProfile && profileCard) {
+        closeProfile.addEventListener('click', function(e) {
+          e.stopPropagation();
+          profileCard.style.display = 'none';
+        });
+      }
+      
+      // Close profile card when clicking outside
+      document.addEventListener('click', function(e) {
+        if (profileCard && !profileCard.contains(e.target) && e.target !== profileIcon) {
+          profileCard.style.display = 'none';
+        }
+      });
+      
+      // Prevent closing when clicking inside the card
+      if (profileCard) {
+        profileCard.addEventListener('click', function(e) {
+          e.stopPropagation();
+        });
+      }
+    });
+  </script>
+</body>
+</html>

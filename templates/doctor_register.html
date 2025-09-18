@@ -1,0 +1,65 @@
+<!-- templates/doctor_register.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Doctor Registration - MedAssist</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/doctor_styles.css') }}" />
+  <script defer src="{{ url_for('static', filename='js/form-validation.js') }}"></script>
+</head>
+<body>
+
+  {% if message %}
+  <div class="custom-message">{{ message }}</div>
+{% endif %}
+
+
+  <section class="doctor-register-section">
+    <div class="form-card">
+      <h2>🩺 Register as a Doctor</h2>
+      <form id="doctorForm" action="/register-doctor" method="POST" enctype="multipart/form-data">
+        <div class="form-grid">
+          <div class="form-column">
+            <h3>👤 Personal Information</h3>
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" name="full_name" required />
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required />
+
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" required />
+
+            <label for="password">Password</label>
+            
+            <input type="password" id="password" name="password" required />
+
+            <label for="location">Location </label>
+            <input type="text" id="location" name="location" required />
+          </div>
+
+
+          <div class="form-column">
+            <h3>🏥 Professional Information</h3>
+            <label for="license">Medical License Number</label>
+            <input type="text" id="license" name="license_number" required />
+
+            <label for="specialization">Specialization</label>
+            <input type="text" id="specialization" name="specialization" required />
+
+            <label for="affiliation">Affiliated Hospital/Clinic</label>
+            <input type="text" id="affiliation" name="affiliation" required />
+
+            <!-- <label for="certificate">Upload Certificate</label>
+            <input type="file" id="certificate" name="certificate" accept=".pdf,.jpg,.jpeg,.png" required /> -->
+          </div>
+        </div>
+        <button type="submit" class="submit-btn">Register</button>
+        <p class="login-link">Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+      </form>
+    </div>
+  </section>
+</body>
+</html>

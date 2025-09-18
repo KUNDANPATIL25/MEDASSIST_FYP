@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Doctor Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+       
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/doctor_dash.css') }}" />
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Navigation Bar -->
+        <div class="dashboard-nav">
+            <h2>MedAssist Doctor </h2>
+            <div class="nav-links">
+           <div class="profile-info">
+          <span class="doctor-name">Hello, Dr. {{ doctor.full_name }}</span>
+          <div class="profile-icon" id="profile-icon" title="Profile">
+      {{ doctor.full_name[0] | upper }}
+    </div>
+  </div>
+</div>
+
+        </div>
+
+        <!-- Profile Drawer -->
+        <div class="profile-drawer" id="profile-drawer" aria-hidden="true">
+            <div class="drawer-close" id="drawer-close" title="Close">&times;</div>
+            <h3>Your Profile</h3>
+            <ul>
+                <li><strong>Name:</strong> {{ doctor.full_name }}</li>
+                <li><strong>Email:</strong> {{ doctor.email }}</li>
+                <li><strong>Phone:</strong> {{ doctor.phone }}</li>
+                <li><strong>Specialization:</strong> {{ doctor.specialization }}</li>
+                <li><strong>License Number:</strong> {{ doctor.license_number }}</li>
+                <li><strong>Location:</strong> {{ doctor.location }}</li>
+                <li><strong>Affiliation:</strong> {{ doctor.affiliation }}</li>
+                <li><strong>Registered On:</strong> {{ doctor.created_at.strftime('%d-%m-%Y %H:%M') }}</li>
+            </ul>
+            <form action="{{ url_for('logout') }}" method="POST">
+                <button class="drawer-logout-btn" type="submit">Logout</button>
+            </form>
+        </div>
+
+        <!-- Main Dashboard Content -->
+        <div class="dashboard-content">
+            <h2>Welcome to your dashboard 😊, Dr. {{ doctor.full_name }}!</h2>
+            <!-- Add more dashboard widgets/content here -->
+        </div>
+    </div>
+
+    <script>
+        const profileIcon = document.getElementById('profile-icon');
+        const profileDrawer = document.getElementById('profile-drawer');
+        const drawerClose = document.getElementById('drawer-close');
+
+        profileIcon.addEventListener('click', () => {
+            profileDrawer.classList.add('open');
+            profileDrawer.setAttribute('aria-hidden', 'false');
+        });
+
+        drawerClose.addEventListener('click', () => {
+            profileDrawer.classList.remove('open');
+            profileDrawer.setAttribute('aria-hidden', 'true');
+        });
+
+        // Optional: close drawer if clicking outside drawer area
+        window.addEventListener('click', (e) => {
+            if (profileDrawer.classList.contains('open') && !profileDrawer.contains(e.target) && e.target !== profileIcon) {
+                profileDrawer.classList.remove('open');
+                profileDrawer.setAttribute('aria-hidden', 'true');
+            }
+        });
+    </script>
+</body>
+</html>
